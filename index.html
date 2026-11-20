@@ -7,39 +7,16 @@
 <title>AzDar Ads Watching</title>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 <style>
-:root {
-  --bg:#080d19;--panel:#111b30;--cyan:#00e5ff;
-  --purple:#a855f7;--white:#f5f8ff;--muted:#9baac1;
-}
+:root{--bg:#080d19;--panel:#111b30;--cyan:#00e5ff;--purple:#a855f7;--white:#f5f8ff;--muted:#9baac1}
 *{box-sizing:border-box}
-body{
- margin:0;background:var(--bg);color:var(--white);
- font-family:Arial,sans-serif;min-height:100vh;
-}
-header{
- padding:20px;background:#10182b;
- border-bottom:1px solid #25334b;
- display:flex;justify-content:space-between;align-items:center;
- position:sticky;top:0;z-index:5;
-}
-.brand{font-size:20px;font-weight:bold;color:var(--cyan)}
-small,.muted{color:var(--muted)}
+body{margin:0;background:var(--bg);color:var(--white);font-family:Arial,sans-serif;min-height:100vh}
+header{padding:18px;background:#10182b;border-bottom:1px solid #25334b;display:flex;justify-content:space-between;align-items:center;position:sticky;top:0;z-index:5}
+.brand{font-size:19px;font-weight:bold;color:var(--cyan)}
 main{max-width:1000px;margin:auto;padding:18px}
-.card{
- background:var(--panel);border:1px solid #283751;
- padding:18px;border-radius:15px;margin:14px 0;
-}
+.card{background:var(--panel);border:1px solid #283751;padding:18px;border-radius:15px;margin:14px 0}
 h2,h3{margin-top:5px}
-input,select{
- width:100%;padding:13px;margin:7px 0 13px;
- background:#091326;color:white;border:1px solid #35445e;
- border-radius:9px;font-size:15px;
-}
-button{
- background:linear-gradient(110deg,#00bcd4,#8b45e8);
- color:white;border:0;border-radius:9px;padding:12px 17px;
- font-weight:bold;cursor:pointer;margin:4px;
-}
+input,select{width:100%;padding:13px;margin:7px 0 13px;background:#091326;color:white;border:1px solid #35445e;border-radius:9px;font-size:15px}
+button{background:linear-gradient(110deg,#00bcd4,#8b45e8);color:white;border:0;border-radius:9px;padding:12px 17px;font-weight:bold;cursor:pointer;margin:4px}
 button.secondary{background:#29364e}
 button.danger{background:#a83250}
 button:disabled{opacity:.5}
@@ -48,15 +25,15 @@ button:disabled{opacity:.5}
 .hidden{display:none!important}
 .nav{display:flex;gap:6px;flex-wrap:wrap;margin:15px 0}
 .nav button{flex:1;min-width:90px}
-.item{padding:12px;border-bottom:1px solid #30405a}
-.status{color:#00e5ff;font-weight:bold}
-.notice{background:#332a17;color:#ffe1a0;padding:12px;border-radius:9px}
-#message{padding:12px;border-radius:9px;margin:10px 0}
+.item{padding:12px;border-bottom:1px solid #30405a;overflow-wrap:anywhere}
+.status{color:var(--cyan);font-weight:bold}
+.muted,small{color:var(--muted)}
+#message{padding:12px;border-radius:9px;margin:10px 0;overflow-wrap:anywhere}
 footer{text-align:center;padding:25px;color:var(--muted)}
+a{color:var(--cyan)}
 </style>
 </head>
 <body>
-
 <header>
  <div class="brand">⚡ AZDAR ADS WATCHING</div>
  <button id="logout" class="secondary hidden" onclick="logout()">Logout</button>
@@ -65,7 +42,6 @@ footer{text-align:center;padding:25px;color:var(--muted)}
 <main>
 <div id="message" class="hidden"></div>
 
-<!-- AUTH -->
 <section id="auth">
  <div class="card">
   <h2>Welcome to AzDar</h2>
@@ -76,22 +52,21 @@ footer{text-align:center;padding:25px;color:var(--muted)}
   </div>
   <div id="loginForm">
    <h3>Member Login</h3>
-   <input id="loginEmail" type="email" placeholder="Email address">
-   <input id="loginPass" type="password" placeholder="Password">
+   <input id="loginEmail" type="email" placeholder="Email address" autocomplete="email">
+   <input id="loginPass" type="password" placeholder="Password" autocomplete="current-password">
    <button onclick="login()">Login</button>
   </div>
   <div id="registerForm" class="hidden">
    <h3>Create Account</h3>
-   <input id="regName" placeholder="Full name">
-   <input id="regPhone" placeholder="WhatsApp number">
-   <input id="regEmail" type="email" placeholder="Email address">
-   <input id="regPass" type="password" minlength="8" placeholder="Password (8+ characters)">
+   <input id="regName" placeholder="Full name" autocomplete="name">
+   <input id="regPhone" placeholder="WhatsApp number" autocomplete="tel">
+   <input id="regEmail" type="email" placeholder="Email address" autocomplete="email">
+   <input id="regPass" type="password" minlength="8" placeholder="Password (8+ characters)" autocomplete="new-password">
    <button onclick="register()">Create Account</button>
   </div>
  </div>
 </section>
 
-<!-- MEMBER -->
 <section id="member" class="hidden">
  <h2>Member Dashboard</h2>
  <p>Welcome, <b id="memberName">Member</b></p>
@@ -100,7 +75,6 @@ footer{text-align:center;padding:25px;color:var(--muted)}
   <div class="card">Available Balance<div class="stat" id="balance">Rs. 0</div></div>
   <div class="card">Active Plans<div class="stat" id="activePlans">0</div></div>
  </div>
-
  <div class="nav">
   <button onclick="memberTab('plans')">Plans</button>
   <button onclick="memberTab('deposits')">Deposits</button>
@@ -108,12 +82,9 @@ footer{text-align:center;padding:25px;color:var(--muted)}
   <button onclick="memberTab('history')">History</button>
   <button onclick="memberTab('tasks')">Tasks</button>
  </div>
-
  <div id="plansTab" class="card">
-  <h3>Available Plans</h3>
-  <div id="plansList">Loading plans...</div>
+  <h3>Available Plans</h3><div id="plansList">Loading plans...</div>
  </div>
-
  <div id="depositsTab" class="card hidden">
   <h3>Manual Deposit Request</h3>
   <p class="muted">Select a plan and submit your payment details.</p>
@@ -124,33 +95,24 @@ footer{text-align:center;padding:25px;color:var(--muted)}
   <button onclick="submitDeposit()">Submit Deposit</button>
   <p class="muted">Payment must be verified by admin before plan activation.</p>
  </div>
-
  <div id="withdrawTab" class="card hidden">
   <h3>Withdraw Funds</h3>
   <p>Available: <b id="withdrawBalance">Rs. 0</b></p>
   <input id="withdrawAmount" type="number" min="1" placeholder="Withdrawal amount">
-  <select id="withdrawMethod">
-   <option>JazzCash</option>
-   <option>Easypaisa</option>
-  </select>
+  <select id="withdrawMethod"><option>JazzCash</option><option>Easypaisa</option></select>
   <input id="withdrawTitle" placeholder="Account title">
   <input id="withdrawAccount" placeholder="Account number">
   <button onclick="requestWithdrawal()">Submit Request</button>
   <p class="muted">Only verified available funds can be withdrawn.</p>
  </div>
-
  <div id="historyTab" class="card hidden">
-  <h3>My Payment & Withdrawal History</h3>
-  <div id="historyList"></div>
+  <h3>My Payment & Withdrawal History</h3><div id="historyList"></div>
  </div>
-
  <div id="tasksTab" class="card hidden">
-  <h3>Available Tasks</h3>
-  <div id="tasksList"></div>
+  <h3>Available Tasks</h3><div id="tasksList"></div>
  </div>
 </section>
 
-<!-- ADMIN -->
 <section id="admin" class="hidden">
  <h2>Admin Dashboard</h2>
  <p class="muted">AzDar Digital Network — Administration</p>
@@ -159,7 +121,6 @@ footer{text-align:center;padding:25px;color:var(--muted)}
   <div class="card">Pending Deposits<div class="stat" id="pendingDeposits">0</div></div>
   <div class="card">Withdrawal Requests<div class="stat" id="pendingWithdrawals">0</div></div>
  </div>
-
  <div class="nav">
   <button onclick="adminTab('members')">Members</button>
   <button onclick="adminTab('payments')">Deposits</button>
@@ -167,19 +128,9 @@ footer{text-align:center;padding:25px;color:var(--muted)}
   <button onclick="adminTab('managePlans')">Manage Plans</button>
   <button onclick="adminTab('manageTasks')">Manage Tasks</button>
  </div>
-
- <div id="membersTab" class="card">
-  <h3>All Members</h3><div id="membersList"></div>
- </div>
-
- <div id="paymentsTab" class="card hidden">
-  <h3>Deposit Requests</h3><div id="paymentsList"></div>
- </div>
-
- <div id="withdrawalsTab" class="card hidden">
-  <h3>Withdrawal Requests</h3><div id="withdrawalsList"></div>
- </div>
-
+ <div id="membersTab" class="card"><h3>All Members</h3><div id="membersList"></div></div>
+ <div id="paymentsTab" class="card hidden"><h3>Deposit Requests</h3><div id="paymentsList"></div></div>
+ <div id="withdrawalsTab" class="card hidden"><h3>Withdrawal Requests</h3><div id="withdrawalsList"></div></div>
  <div id="managePlansTab" class="card hidden">
   <h3>Add New Plan</h3>
   <input id="newPlanName" placeholder="Plan name">
@@ -188,7 +139,6 @@ footer{text-align:center;padding:25px;color:var(--muted)}
   <button onclick="addPlan()">Add Plan</button>
   <div id="adminPlans"></div>
  </div>
-
  <div id="manageTasksTab" class="card hidden">
   <h3>Add Task</h3>
   <input id="newTaskTitle" placeholder="Task title">
@@ -203,257 +153,348 @@ footer{text-align:center;padding:25px;color:var(--muted)}
 <footer>AzDar Digital Network · Your Work, Your Records</footer>
 
 <script>
-// SUPABASE CONNECTION
-const SUPABASE_URL = "https://nsxainogzvfrrlqttzai.supabase.co";
-const SUPABASE_KEY = "sb_publishable_uki8sf7ANqY8WdU4MdIdbw_rZfOpEri";
+  
+"use strict";
 
-const db = window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
+const SUPABASE_URL="https://nsxainogzvfrrlqttzai.supabase.co";
+const SUPABASE_KEY="sb_publishable_uki8sf7ANqY8WdU4MdIdbw_rZfOpEri";
+
+const db=window.supabase.createClient(SUPABASE_URL,SUPABASE_KEY);
 let currentUser=null;
 let currentProfile=null;
 
+function safe(value){
+ return String(value??"").replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+}
 function msg(text,error=false){
- const box=document.getElementById('message');
+ const box=document.getElementById("message");
  box.textContent=text;
- box.className='';
- box.style.background=error?'#592638':'#174438';
+ box.className="";
+ box.style.background=error?"#592638":"#174438";
  window.scrollTo(0,0);
 }
-function clearMsg(){
- document.getElementById('message').className='hidden';
-}
-function show(id){document.getElementById(id).classList.remove('hidden')}
-function hide(id){document.getElementById(id).classList.add('hidden')}
+function clearMsg(){document.getElementById("message").className="hidden"}
+function show(id){document.getElementById(id).classList.remove("hidden")}
+function hide(id){document.getElementById(id).classList.add("hidden")}
 
 function showAuth(type){
- if(type==='login'){show('loginForm');hide('registerForm')}
- else{hide('loginForm');show('registerForm')}
+ if(type==="login"){show("loginForm");hide("registerForm")}
+ else{hide("loginForm");show("registerForm")}
  clearMsg();
 }
-
 function memberTab(tab){
- ['plans','deposits','withdraw','history','tasks'].forEach(x=>{
-  document.getElementById(x+'Tab').classList.toggle('hidden',x!==tab);
+ ["plans","deposits","withdraw","history","tasks"].forEach(x=>{
+  document.getElementById(x+"Tab").classList.toggle("hidden",x!==tab);
  });
 }
 function adminTab(tab){
- ['members','payments','withdrawals','managePlans','manageTasks'].forEach(x=>{
-  document.getElementById(x+'Tab').classList.toggle('hidden',x!==tab);
+ ["members","payments","withdrawals","managePlans","manageTasks"].forEach(x=>{
+  document.getElementById(x+"Tab").classList.toggle("hidden",x!==tab);
  });
 }
 
 async function register(){
- const name=document.getElementById('regName').value.trim();
- const phone=document.getElementById('regPhone').value.trim();
- const email=document.getElementById('regEmail').value.trim();
- const password=document.getElementById('regPass').value;
- if(!name||!phone||!email||password.length<8)return msg('Please complete all fields. Password must be 8+ characters.',true);
- const {data,error}=await db.auth.signUp({
-  email,password,
-  options:{data:{full_name:name,phone}}
- });
- if(error)return msg(error.message,true);
- msg(data.session?'Account created successfully.':'Account created. Please verify your email, then login.');
+ try{
+  const name=document.getElementById("regName").value.trim();
+  const phone=document.getElementById("regPhone").value.trim();
+  const email=document.getElementById("regEmail").value.trim();
+  const password=document.getElementById("regPass").value;
+  if(!name||!phone||!email||password.length<8)
+   return msg("Complete all fields. Password must be 8+ characters.",true);
+
+  const {data,error}=await db.auth.signUp({
+   email,password,options:{data:{full_name:name,phone}}
+  });
+  if(error)return msg(error.message,true);
+  if(data.session){
+   msg("Account created successfully.");
+   await loadApp();
+  }else{
+   msg("Account created. Verify your email, then login.");
+  }
+ }catch(e){msg(e.message||"Registration failed.",true)}
 }
 
 async function login(){
- const email=document.getElementById('loginEmail').value.trim();
- const password=document.getElementById('loginPass').value;
- const {error}=await db.auth.signInWithPassword({email,password});
- if(error)return msg(error.message,true);
- await loadApp();
+ try{
+  const email=document.getElementById("loginEmail").value.trim();
+  const password=document.getElementById("loginPass").value;
+  if(!email||!password)return msg("Enter your email and password.",true);
+  const {error}=await db.auth.signInWithPassword({email,password});
+  if(error)return msg(error.message,true);
+  await loadApp();
+ }catch(e){msg(e.message||"Login failed.",true)}
 }
 
 async function logout(){
  await db.auth.signOut();
  currentUser=null;currentProfile=null;
- hide('member');hide('admin');hide('logout');show('auth');
- showAuth('login');
- msg('You have logged out.');
+ hide("member");hide("admin");hide("logout");show("auth");
+ showAuth("login");msg("You have logged out.");
 }
 
 async function loadApp(){
- const {data:{user}}=await db.auth.getUser();
- if(!user){show('auth');return}
- currentUser=user;
- const {data:profile,error}=await db.from('profiles').select('*').eq('id',user.id).single();
- if(error)return msg('Profile loading error: '+error.message,true);
- currentProfile=profile;
- hide('auth');show('logout');
- if(profile.role==='admin'){
-  show('admin');hide('member');
-  await loadAdmin();
- }else{
-  show('member');hide('admin');
-  document.getElementById('memberName').textContent=profile.full_name||'Member';
-  await loadMember();
- }
+ try{
+  const {data:{user},error:userError}=await db.auth.getUser();
+  if(userError)throw userError;
+  if(!user){show("auth");hide("member");hide("admin");hide("logout");return}
+  currentUser=user;
+  const {data:profile,error}=await db.from("profiles").select("*").eq("id",user.id).single();
+  if(error)throw new Error("Profile loading error: "+error.message);
+  currentProfile=profile;
+  hide("auth");show("logout");
+  if(profile.role==="admin"){
+   show("admin");hide("member");await loadAdmin();
+  }else{
+   show("member");hide("admin");
+   document.getElementById("memberName").textContent=profile.full_name||"Member";
+   await loadMember();
+  }
+ }catch(e){msg(e.message||"Unable to load account.",true)}
 }
 
 async function loadMember(){
  await Promise.all([loadPlans(),loadBalance(),loadHistory(),loadTasks()]);
- const {count}=await db.from('subscriptions').select('*',{count:'exact',head:true}).eq('user_id',currentUser.id).eq('status','active');
- document.getElementById('activePlans').textContent=count||0;
+ const {count,error}=await db.from("subscriptions").select("*",{count:"exact",head:true}).eq("user_id",currentUser.id).eq("status","active");
+ if(error)return msg(error.message,true);
+ document.getElementById("activePlans").textContent=count||0;
 }
 
 async function loadPlans(){
- const {data,error}=await db.from('plans').select('*').eq('active',true);
- if(error)return msg(error.message,true);
- const list=document.getElementById('plansList');
- const select=document.getElementById('depositPlan');
- list.innerHTML='';select.innerHTML='';
+ const {data,error}=await db.from("plans").select("*").eq("active",true).order("created_at",{ascending:false});
+ if(error)return msg("Plans: "+error.message,true);
+ const list=document.getElementById("plansList");
+ const select=document.getElementById("depositPlan");
+ list.innerHTML="";select.innerHTML="";
  (data||[]).forEach(p=>{
-  list.innerHTML+=`<div class="item"><b>${safe(p.name)}</b><p>Rs. ${p.price}</p><p>${safe(p.description||'')}</p><button onclick="choosePlan('${p.id}',${p.price})">Select Plan</button></div>`;
-  select.innerHTML+=`<option value="${p.id}" data-price="${p.price}">${safe(p.name)} — Rs. ${p.price}</option>`;
+  list.innerHTML+=`<div class="item"><b>${safe(p.name)}</b><p>Rs. ${safe(p.price)}</p><p>${safe(p.description||"")}</p><button onclick="choosePlan('${safe(p.id)}',${Number(p.price)})">Select Plan</button></div>`;
+  select.innerHTML+=`<option value="${safe(p.id)}" data-price="${Number(p.price)}">${safe(p.name)} — Rs. ${safe(p.price)}</option>`;
  });
- if(!data?.length)list.textContent='No plans are available yet.';
+ if(!data||!data.length)list.textContent="No plans available yet.";
 }
+
 function choosePlan(id,price){
- document.getElementById('depositPlan').value=id;
- document.getElementById('depositAmount').value=price;
- memberTab('deposits');
+ document.getElementById("depositPlan").value=id;
+ document.getElementById("depositAmount").value=price;
+ memberTab("deposits");
 }
 
 async function submitDeposit(){
- const plan=document.getElementById('depositPlan').value;
- const amount=Number(document.getElementById('depositAmount').value);
- const txn=document.getElementById('depositTxn').value.trim();
- const proof=document.getElementById('depositProof').value.trim();
- if(!plan||amount<=0||!txn)return msg('Select a plan and enter valid payment details.',true);
- const {error}=await db.from('payment_requests').insert({
-  user_id:currentUser.id,plan_id:plan,amount,
-  transaction_id:txn,proof_url:proof||null,status:'pending'
- });
- if(error)return msg(error.message,true);
- msg('Deposit request submitted. Await admin verification.');
- document.getElementById('depositTxn').value='';
- await loadHistory();
+ try{
+  const plan=document.getElementById("depositPlan").value;
+  const amount=Number(document.getElementById("depositAmount").value);
+  const txn=document.getElementById("depositTxn").value.trim();
+  const proof=document.getElementById("depositProof").value.trim();
+  if(!plan||!Number.isFinite(amount)||amount<=0||!txn)
+   return msg("Select a plan and enter valid payment details.",true);
+  if(proof&&!/^https?:\/\//i.test(proof))
+   return msg("Enter a valid proof image URL.",true);
+  const {error}=await db.from("payment_requests").insert({
+   user_id:currentUser.id,plan_id:plan,amount,
+   transaction_id:txn,proof_url:proof||null,status:"pending"
+  });
+  if(error)return msg(error.message,true);
+  msg("Deposit request submitted for admin verification.");
+  document.getElementById("depositTxn").value="";
+  document.getElementById("depositProof").value="";
+  await loadHistory();
+ }catch(e){msg(e.message||"Deposit request failed.",true)}
 }
 
 async function loadBalance(){
- const {data:ledger,error}=await db.from('earnings_ledger').select('amount,entry_type').eq('user_id',currentUser.id).eq('status','verified');
- if(error)return msg(error.message,true);
- const gross=(ledger||[]).reduce((s,x)=>s+(x.entry_type==='credit'?Number(x.amount):-Number(x.amount)),0);
- const {data:requests,error:e2}=await db.from('withdrawals').select('amount').eq('user_id',currentUser.id).in('status',['pending','processing','paid']);
- if(e2)return msg(e2.message,true);
+ const {data:ledger,error}=await db.from("earnings_ledger").select("amount,entry_type").eq("user_id",currentUser.id).eq("status","verified");
+ if(error)return msg("Balance: "+error.message,true);
+ const gross=(ledger||[]).reduce((s,x)=>s+(x.entry_type==="credit"?Number(x.amount):-Number(x.amount)),0);
+ const {data:requests,error:e2}=await db.from("withdrawals").select("amount").eq("user_id",currentUser.id).in("status",["pending","processing","paid"]);
+ if(e2)return msg("Withdrawal balance: "+e2.message,true);
  const reserved=(requests||[]).reduce((s,x)=>s+Number(x.amount),0);
  const available=Math.max(0,gross-reserved);
- document.getElementById('balance').textContent='Rs. '+available.toFixed(2);
- document.getElementById('withdrawBalance').textContent='Rs. '+available.toFixed(2);
+ document.getElementById("balance").textContent="Rs. "+available.toFixed(2);
+ document.getElementById("withdrawBalance").textContent="Rs. "+available.toFixed(2);
 }
 
 async function requestWithdrawal(){
- const amount=Number(document.getElementById('withdrawAmount').value);
- const method=document.getElementById('withdrawMethod').value;
- const title=document.getElementById('withdrawTitle').value.trim();
- const account=document.getElementById('withdrawAccount').value.trim();
- if(amount<=0||!title||!account)return msg('Enter valid withdrawal details.',true);
- const {error}=await db.rpc('request_withdrawal',{
-  p_amount:amount,p_method:method,p_title:title,p_account:account
- });
- if(error)return msg(error.message,true);
- msg('Withdrawal request submitted successfully.');
- document.getElementById('withdrawAmount').value='';
- await loadBalance();await loadHistory();
+ try{
+  const amount=Number(document.getElementById("withdrawAmount").value);
+  const method=document.getElementById("withdrawMethod").value;
+  const title=document.getElementById("withdrawTitle").value.trim();
+  const account=document.getElementById("withdrawAccount").value.trim();
+  if(!Number.isFinite(amount)||amount<=0||!title||!account)
+   return msg("Enter valid withdrawal details.",true);
+  const {error}=await db.rpc("request_withdrawal",{
+   p_amount:amount,p_method:method,p_title:title,p_account:account
+  });
+  if(error)return msg(error.message,true);
+  msg("Withdrawal request submitted.");
+  document.getElementById("withdrawAmount").value="";
+  await loadBalance();await loadHistory();
+ }catch(e){msg(e.message||"Withdrawal request failed.",true)}
 }
 
 async function loadHistory(){
  const [p,w]=await Promise.all([
-  db.from('payment_requests').select('id,amount,status,transaction_id,created_at').eq('user_id',currentUser.id).order('created_at',{ascending:false}),
-  db.from('withdrawals').select('id,amount,status,payment_method,transaction_id,created_at').eq('user_id',currentUser.id).order('created_at',{ascending:false})
+  db.from("payment_requests").select("id,amount,status,transaction_id,created_at").eq("user_id",currentUser.id).order("created_at",{ascending:false}),
+  db.from("withdrawals").select("id,amount,status,payment_method,transaction_id,created_at").eq("user_id",currentUser.id).order("created_at",{ascending:false})
  ]);
- const el=document.getElementById('historyList');el.innerHTML='';
- if(p.error||w.error)return msg('History loading error.',true);
- (p.data||[]).forEach(x=>el.innerHTML+=`<div class="item">Deposit · Rs. ${x.amount} · <b>${safe(x.status)}</b><br><small>${safe(x.transaction_id)}</small></div>`);
- (w.data||[]).forEach(x=>el.innerHTML+=`<div class="item">Withdrawal · Rs. ${x.amount} · <b>${safe(x.status)}</b><br><small>${safe(x.payment_method)} · ${safe(x.transaction_id||'')}</small></div>`);
- if(!el.innerHTML)el.textContent='No transactions yet.';
+ const el=document.getElementById("historyList");el.innerHTML="";
+ if(p.error||w.error)return msg("History error: "+(p.error?.message||w.error?.message),true);
+ (p.data||[]).forEach(x=>{
+  el.innerHTML+=`<div class="item">Deposit · Rs. ${safe(x.amount)} · <b>${safe(x.status)}</b><br><small>${safe(x.transaction_id)}</small></div>`;
+ });
+ (w.data||[]).forEach(x=>{
+  el.innerHTML+=`<div class="item">Withdrawal · Rs. ${safe(x.amount)} · <b>${safe(x.status)}</b><br><small>${safe(x.payment_method)} · ${safe(x.transaction_id||"")}</small></div>`;
+ });
+ if(!el.innerHTML)el.textContent="No transactions yet.";
 }
 
 async function loadTasks(){
- const {data,error}=await db.from('tasks').select('*').eq('active',true);
- if(error)return msg(error.message,true);
- const el=document.getElementById('tasksList');el.innerHTML='';
+ const {data,error}=await db.from("tasks").select("*").eq("active",true).order("created_at",{ascending:false});
+ if(error)return msg("Tasks: "+error.message,true);
+ const el=document.getElementById("tasksList");el.innerHTML="";
  (data||[]).forEach(t=>{
-  el.innerHTML+=`<div class="item"><b>${safe(t.title)}</b><p>${safe(t.description||'')}</p><a href="${safe(t.task_url||'#')}" target="_blank" rel="noopener">Open Task</a><br><button onclick="submitTask('${t.id}')">Mark Submitted</button></div>`;
+  const link=t.task_url?`<a href="${safe(t.task_url)}" target="_blank" rel="noopener">Open Task</a>`:"";
+  el.innerHTML+=`<div class="item"><b>${safe(t.title)}</b><p>${safe(t.description||"")}</p>${link}<br><button onclick="submitTask('${safe(t.id)}')">Mark Submitted</button></div>`;
  });
- if(!el.innerHTML)el.textContent='No tasks available.';
+ if(!el.innerHTML)el.textContent="No tasks available.";
 }
 
 async function submitTask(id){
- const {error}=await db.from('task_completions').insert({user_id:currentUser.id,task_id:id,status:'submitted'});
+ const {error}=await db.from("task_completions").insert({
+  user_id:currentUser.id,task_id:id,status:"submitted"
+ });
  if(error)return msg(error.message,true);
- msg('Task submitted for review.');
+ msg("Task submitted for review.");
 }
 
 async function loadAdmin(){
  const [members,payments,withdrawals]=await Promise.all([
-  db.from('profiles').select('*').order('created_at',{ascending:false}),
-  db.from('payment_requests').select('*').order('created_at',{ascending:false}),
-  db.from('withdrawals').select('*').order('created_at',{ascending:false})
+  db.from("profiles").select("*").order("created_at",{ascending:false}),
+  db.from("payment_requests").select("*").order("created_at",{ascending:false}),
+  db.from("withdrawals").select("*").order("created_at",{ascending:false})
  ]);
- if(members.error||payments.error||withdrawals.error)return msg('Admin data loading error.',true);
- document.getElementById('totalMembers').textContent=members.data.length;
- document.getElementById('pendingDeposits').textContent=payments.data.filter(x=>x.status==='pending').length;
- document.getElementById('pendingWithdrawals').textContent=withdrawals.data.filter(x=>x.status==='pending').length;
- document.getElementById('membersList').innerHTML=members.data.map(x=>`<div class="item">${safe(x.full_name)} · ${safe(x.phone||'')} · <b>${safe(x.role)}</b></div>`).join('')||'No members';
- document.getElementById('paymentsList').innerHTML=payments.data.map(x=>`<div class="item">Rs. ${x.amount} · ${safe(x.transaction_id)} · ${safe(x.status)}<br><small>User: ${x.user_id}</small><br>${x.proof_url?`<a href="${safe(x.proof_url)}" target="_blank" rel="noopener">Payment proof</a><br>`:''}${x.status==='pending'?`<button onclick="reviewPayment('${x.id}','${x.user_id}','${x.plan_id}','${x.amount}','approved')">Approve</button><button class="danger" onclick="reviewPayment('${x.id}','${x.user_id}','${x.plan_id}','${x.amount}','rejected')">Reject</button>`:''}</div>`).join('')||'No deposits';
- document.getElementById('withdrawalsList').innerHTML=withdrawals.data.map(x=>`<div class="item">Rs. ${x.amount} · ${safe(x.payment_method)} · ${safe(x.account_title)} · ${safe(x.account_number)}<br>Status: <b>${safe(x.status)}</b><br>User: ${x.user_id}<br>${x.status==='pending'?`<button onclick="updateWithdrawal('${x.id}','processing')">Processing</button><button class="danger" onclick="updateWithdrawal('${x.id}','rejected')">Reject</button>`:''}${x.status==='processing'?`<button onclick="markPaid('${x.id}')">Mark Paid</button>`:''}</div>`).join('')||'No withdrawals';
- await loadAdminPlans();await loadAdminTasks();
+ if(members.error||payments.error||withdrawals.error)
+  return msg("Admin data error: "+(members.error?.message||payments.error?.message||withdrawals.error?.message),true);
+
+ document.getElementById("totalMembers").textContent=members.data.length;
+ document.getElementById("pendingDeposits").textContent=payments.data.filter(x=>x.status==="pending").length;
+ document.getElementById("pendingWithdrawals").textContent=withdrawals.data.filter(x=>x.status==="pending").length;
+
+ document.getElementById("membersList").innerHTML=members.data.map(x=>
+  `<div class="item">${safe(x.full_name)} · ${safe(x.phone||"")} · <b>${safe(x.role)}</b></div>`
+ ).join("")||"No members";
+
+ document.getElementById("paymentsList").innerHTML=payments.data.map(x=>
+  `<div class="item">Rs. ${safe(x.amount)} · ${safe(x.transaction_id)} · ${safe(x.status)}<br><small>User: ${safe(x.user_id)}</small><br>${x.proof_url?`<a href="${safe(x.proof_url)}" target="_blank" rel="noopener">Payment proof</a><br>`:""}${x.status==="pending"?`<button onclick="reviewPayment('${safe(x.id)}','${safe(x.user_id)}','${safe(x.plan_id)}','${Number(x.amount)}','approved')">Approve</button><button class="danger" onclick="reviewPayment('${safe(x.id)}','${safe(x.user_id)}','${safe(x.plan_id)}','${Number(x.amount)}','rejected')">Reject</button>`:""}</div>`
+ ).join("")||"No deposits";
+
+ document.getElementById("withdrawalsList").innerHTML=withdrawals.data.map(x=>
+  `<div class="item">Rs. ${safe(x.amount)} · ${safe(x.payment_method)} · ${safe(x.account_title)} · ${safe(x.account_number)}<br>Status: <b>${safe(x.status)}</b><br>User: ${safe(x.user_id)}<br>${x.status==="pending"?`<button onclick="updateWithdrawal('${safe(x.id)}','processing')">Processing</button><button class="danger" onclick="updateWithdrawal('${safe(x.id)}','rejected')">Reject</button>`:""}${x.status==="processing"?`<button onclick="markPaid('${safe(x.id)}')">Mark Paid</button>`:""}</div>`
+ ).join("")||"No withdrawals";
+
+ await loadAdminPlans();
+ await loadAdminTasks();
 }
 
 async function reviewPayment(id,user,plan,amount,status){
- if(!confirm('Confirm '+status+' this deposit?'))return;
- const {error}=await db.from('payment_requests').update({status}).eq('id',id).eq('status','pending');
+ if(!confirm("Confirm "+status+" this deposit?"))return;
+ const {error}=await db.from("payment_requests").update({status}).eq("id",id).eq("status","pending");
  if(error)return msg(error.message,true);
- if(status==='approved'){
-  const {error:e}=await db.from('subscriptions').insert({user_id:user,plan_id:plan,status:'active',started_at:new Date().toISOString()});
-  if(e)return msg('Payment approved, but subscription creation failed: '+e.message,true);
+ if(status==="approved"){
+  const {error:e}=await db.from("subscriptions").insert({
+   user_id:user,plan_id:plan,status:"active",started_at:new Date().toISOString()
+  });
+  if(e)return msg("Payment updated but subscription creation failed: "+e.message,true);
  }
- msg('Deposit '+status+'.');
+ msg("Deposit "+status+".");
  await loadAdmin();
 }
 
 async function updateWithdrawal(id,status){
- if(!confirm('Confirm '+status+'?'))return;
- const {error}=await db.from('withdrawals').update({status,updated_at:new Date().toISOString()}).eq('id',id);
+ if(!confirm("Confirm "+status+"?"))return;
+ const {error}=await db.from("withdrawals").update({
+  status,updated_at:new Date().toISOString()
+ }).eq("id",id);
  if(error)return msg(error.message,true);
- msg('Withdrawal updated.');
+ msg("Withdrawal updated.");
  await loadAdmin();
 }
 
 async function markPaid(id){
- const txn=prompt('Enter actual payment transaction ID:');
- if(!txn)return;
- const {error}=await db.from('withdrawals').update({status:'paid',transaction_id:txn,updated_at:new Date().toISOString()}).eq('id',id).eq('status','processing');
+ const txn=prompt("Enter actual payment transaction ID:");
+ if(!txn||!txn.trim())return;
+ const {error}=await db.from("withdrawals").update({
+  status:"paid",transaction_id:txn.trim(),updated_at:new Date().toISOString()
+ }).eq("id",id).eq("status","processing");
  if(error)return msg(error.message,true);
- msg('Withdrawal marked as paid.');
+ msg("Withdrawal marked as paid.");
  await loadAdmin();
 }
 
 async function addPlan(){
- const name=document.getElementById('newPlanName').value.trim();
- const price=Number(document.getElementById('newPlanPrice').value);
- const description=document.getElementById('newPlanDesc').value.trim();
- if(!name||price<0||!Number.isFinite(price))return msg('Enter valid plan details.',true);
- const {error}=await db.from('plans').insert({name,price,description,active:true});
+ const name=document.getElementById("newPlanName").value.trim();
+ const price=Number(document.getElementById("newPlanPrice").value);
+ const description=document.getElementById("newPlanDesc").value.trim();
+ if(!name||!Number.isFinite(price)||price<0)return msg("Enter valid plan details.",true);
+ const {error}=await db.from("plans").insert({name,price,description,active:true});
  if(error)return msg(error.message,true);
- msg('Plan added.');await loadPlans();await loadAdminPlans();
+ msg("Plan added.");
+ document.getElementById("newPlanName").value="";
+ document.getElementById("newPlanPrice").value="";
+ document.getElementById("newPlanDesc").value="";
+ await loadPlans();await loadAdminPlans();
 }
 
 async function loadAdminPlans(){
- const {data,error}=await db.from('plans').select('*').order('created_at',{ascending:false});
- if(error)return;
- document.getElementById('adminPlans').innerHTML=(data||[]).map(p=>`<div class="item">${safe(p.name)} · Rs. ${p.price} · ${p.active?'Active':'Disabled'} <button class="secondary" onclick="togglePlan('${p.id}',${!p.active})">${p.active?'Disable':'Enable'}</button></div>`).join('');
-}
-async function togglePlan(id,active){
- const {error}=await db.from('plans').update({active}).eq('id',id);
+ const {data,error}=await db.from("plans").select("*").order("created_at",{ascending:false});
  if(error)return msg(error.message,true);
+ document.getElementById("adminPlans").innerHTML=(data||[]).map(p=>
+  `<div class="item">${safe(p.name)} · Rs. ${safe(p.price)} · ${p.active?"Active":"Disabled"} <button class="secondary" onclick="togglePlan('${safe(p.id)}',${!p.active})">${p.active?"Disable":"Enable"}</button></div>`
+ ).join("")||"No plans created.";
+}
+
+async function togglePlan(id,active){
+ const {error}=await db.from("plans").update({active}).eq("id",id);
+ if(error)return msg(error.message,true);
+ msg("Plan status updated.");
  await loadPlans();await loadAdminPlans();
 }
 
 async function addTask(){
- const title=document.getElementById('newTaskTitle').value.trim();
- const description=document.getElementById('newTaskDesc').value.trim();
- const task_url=document.getElementById('newTaskUrl').value.trim();
- if(!title)return msg('Task title is required.',true);
- const {error}=await db.from('tasks').insert({title,description,task_url,active:true});
- if(er
+ const title=document.getElementById("newTaskTitle").value.trim();
+ const description=document.getElementById("newTaskDesc").value.trim();
+ const task_url=document.getElementById("newTaskUrl").value.trim();
+ if(!title)return msg("Task title is required.",true);
+ if(task_url&&!/^https?:\/\//i.test(task_url))return msg("Enter a valid task URL.",true);
+ const {error}=await db.from("tasks").insert({title,description,task_url,active:true});
+ if(error)return msg(error.message,true);
+ msg("Task added.");
+ document.getElementById("newTaskTitle").value="";
+ document.getElementById("newTaskDesc").value="";
+ document.getElementById("newTaskUrl").value="";
+ await loadAdminTasks();await loadTasks();
+}
+
+async function loadAdminTasks(){
+ const {data,error}=await db.from("tasks").select("*").order("created_at",{ascending:false});
+ if(error)return msg(error.message,true);
+ document.getElementById("adminTasks").innerHTML=(data||[]).map(t=>
+  `<div class="item">${safe(t.title)} · ${t.active?"Active":"Disabled"} <button class="secondary" onclick="toggleTask('${safe(t.id)}',${!t.active})">${t.active?"Disable":"Enable"}</button></div>`
+ ).join("")||"No tasks created.";
+}
+
+async function toggleTask(id,active){
+ const {error}=await db.from("tasks").update({active}).eq("id",id);
+ if(error)return msg(error.message,true);
+ msg("Task status updated.");
+ await loadAdminTasks();await loadTasks();
+}
+
+window.addEventListener("load",async()=>{
+ if(!window.supabase){msg("Supabase library could not load. Check your internet connection.",true);return}
+ const {data,error}=await db.auth.getSession();
+ if(error){msg(error.message,true);return}
+ if(data.session)await loadApp();
+});
+</script>
+</body>
+</html>
