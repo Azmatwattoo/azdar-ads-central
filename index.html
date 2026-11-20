@@ -495,6 +495,24 @@ window.addEventListener("load",async()=>{
  if(error){msg(error.message,true);return}
  if(data.session)await loadApp();
 });
+window.showAuth=showAuth;
+window.login=login;
+window.register=register;
+window.logout=logout;
+window.memberTab=memberTab;
+window.adminTab=adminTab;
+window.choosePlan=choosePlan;
+window.submitDeposit=submitDeposit;
+window.requestWithdrawal=requestWithdrawal;
+window.submitTask=submitTask;
+window.reviewPayment=reviewPayment;
+window.updateWithdrawal=updateWithdrawal;
+window.markPaid=markPaid;
+window.addPlan=addPlan;
+window.togglePlan=togglePlan;
+window.addTask=addTask;
+window.toggleTask=toggleTask;
+ 
 </script>
 </body>
 </html>
